@@ -1,9 +1,12 @@
-import { _ as __mf_13, a as __mf_6, W as Workbench } from './Workbench-Di-HbphI.js';
+import { _ as __mf_15, a as __mf_7, W as Workbench } from './Workbench-CTlbPujo.js';
 
 const _sfc_main = {
-  __name: 'Page',
+  __name: 'AppPage',
   props: {
   api: { type: Object, default: () => ({}) },
+  navKey: { type: String, default: '' },
+  pluginId: { type: String, default: '' },
+  sourcePluginId: { type: String, default: '' },
 },
   emits: ['action', 'close'],
   setup(__props) {
@@ -12,7 +15,7 @@ const _sfc_main = {
 
 
 return (_ctx, _cache) => {
-  return (__mf_13(), __mf_6(Workbench, {
+  return (__mf_15(), __mf_7(Workbench, {
     api: __props.api,
     onAction: _cache[0] || (_cache[0] = $event => (_ctx.$emit('action'))),
     onClose: _cache[1] || (_cache[1] = $event => (_ctx.$emit('close')))

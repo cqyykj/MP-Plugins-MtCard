@@ -1,4 +1,4 @@
-import { b as __mf_12, _ as __mf_13, a as __mf_6, W as Workbench } from './Workbench-Di-HbphI.js';
+import { b as __mf_13, _ as __mf_15, a as __mf_7, W as Workbench } from './Workbench-CTlbPujo.js';
 
 const _sfc_main = {
   __name: 'Config',
@@ -12,12 +12,12 @@ const _sfc_main = {
 
 const emit = __emit;
 
-__mf_12(() => {
+__mf_13(() => {
   emit('layout', { maxWidth: '80rem' });
 });
 
 return (_ctx, _cache) => {
-  return (__mf_13(), __mf_6(Workbench, {
+  return (__mf_15(), __mf_7(Workbench, {
     api: __props.api,
     "initial-tab": "overview",
     onClose: _cache[0] || (_cache[0] = $event => (_ctx.$emit('close')))
