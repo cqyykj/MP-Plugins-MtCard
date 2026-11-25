@@ -25,7 +25,17 @@ try:
 except ImportError:  # pragma: no cover 极端环境兜底
     logger = logging.getLogger("MtCardManager")
 
-# 站点配置读取：V3 兼容层仍保留 app.core.plugin.PluginManager
+# 站点配置读取：优先用 SiteOper 直读站点表（V3 推荐「宿主数据用 Oper」）
+# 旧 PluginManager().get_sites() 在 V3 返回结构变化，读不到 apikey，仅作兜底
+SiteOper = None  # type: ignore
+for _site_oper_path in ("app.db.oper.site", "app.db.site_oper", "app.core.site"):
+    try:
+        _mod = __import__(_site_oper_path, fromlist=["SiteOper"])
+        SiteOper = getattr(_mod, "SiteOper")
+        break
+    except Exception:  # noqa: BLE001
+        continue
+
 try:
     from app.core.plugin import PluginManager
 except ImportError:  # pragma: no cover
@@ -84,7 +94,7 @@ class MtCardManager(_PluginBase):
     plugin_name = "MTeam 卡片管家"
     plugin_desc = "M-Team 收藏卡管理：总览 / 重复卡挂单（价格对照防扫）/ 我的成交。只用 API Key，不用 Cookie。"
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.0.2"
+    plugin_version = "1.0.3"
     plugin_author = "cqyykj"
     author_url = "https://github.com/cqyykj/MP-Plugins-MtCard"
     plugin_config_prefix = "mtcardmanager_"
@@ -174,20 +184,49 @@ class MtCardManager(_PluginBase):
     # 底层：站点 Key 读取 + 限流请求（单一出口，代码审计点）
     # ------------------------------------------------------------------
     def _get_api_key(self) -> Optional[str]:
-        """从 MP 站点配置（domain 含 m-team）读取 apikey，仅在内存使用。"""
-        if PluginManager is None:
-            return None
-        try:
-            sites = PluginManager().get_sites()
-        except Exception as e:  # noqa: BLE001
-            logger.warning("MtCardManager 读取站点配置失败: %s", e)
-            return None
-        for site in sites:
-            domain = (site.get("domain") or site.get("url") or "").lower()
-            if "m-team" in domain or "mteam" in domain:
-                key = site.get("apikey") or ""
-                if key:
-                    return key
+        """从 MP 站点配置读取馒头 apikey，只在内存使用，绝不下发前端。
+
+        V3 优先用 SiteOper 直读站点表（Site.apikey 为明文）；
+        旧 PluginManager().get_sites() 返回结构在 V3 已变化，仅作兜底。
+        """
+        # 路径一：SiteOper 直读（V3 推荐）
+        if SiteOper is not None:
+            try:
+                for domain in ("m-team.cc", "api2.m-team.cc", "kp.m-team.cc"):
+                    site = SiteOper().get_by_domain(domain)
+                    if site is not None:
+                        key = getattr(site, "apikey", "") or ""
+                        if key:
+                            return key
+                # 按名称兜底（站点名「馒头」）
+                try:
+                    for site in SiteOper().list_active():
+                        name = getattr(site, "name", "") or ""
+                        if "馒头" in name or "m-team" in name.lower():
+                            key = getattr(site, "apikey", "") or ""
+                            if key:
+                                return key
+                except Exception:  # noqa: BLE001
+                    pass
+            except Exception as e:  # noqa: BLE001
+                logger.warning("MtCardManager 通过 SiteOper 读取站点失败: %s", e)
+
+        # 路径二：旧 PluginManager 兜底（兼容 V2/早期 V3）
+        if PluginManager is not None:
+            try:
+                sites = PluginManager().get_sites()
+                for site in sites or []:
+                    if isinstance(site, dict):
+                        domain = (site.get("domain") or site.get("url") or "").lower()
+                        key = site.get("apikey") or ""
+                    else:
+                        domain = (getattr(site, "domain", "") or "").lower()
+                        key = getattr(site, "apikey", "") or ""
+                    if "m-team" in domain or "mteam" in domain:
+                        if key:
+                            return key
+            except Exception as e:  # noqa: BLE001
+                logger.warning("MtCardManager 通过 PluginManager 读取站点失败: %s", e)
         return None
 
     def _get_session(self) -> requests.Session:
