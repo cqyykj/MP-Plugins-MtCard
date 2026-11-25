@@ -176,7 +176,7 @@ const props = __props;
 
 
 const tab = __mf_1('overview');
-const status = __mf_1({ has_key: false });
+const status = __mf_1(null);  // null=加载中，避免首屏误报"未找到 API Key"
 const overview = __mf_1(null);
 const dupGroups = __mf_1([]);
 const trades = __mf_1(null);
@@ -273,7 +273,7 @@ return (_ctx, _cache) => {
     class: "pa-2 mt-card"
   }, {
     default: __mf_17(() => [
-      (!status.value.has_key)
+      (status.value && !status.value.has_key)
         ? (__mf_13(), __mf_6(_component_v_alert, {
             key: 0,
             type: "warning",
@@ -624,6 +624,6 @@ return (_ctx, _cache) => {
 }
 
 };
-const Workbench = /*#__PURE__*/_export_sfc(_sfc_main, [['__scopeId',"data-v-ed6c1ab5"]]);
+const Workbench = /*#__PURE__*/_export_sfc(_sfc_main, [['__scopeId',"data-v-0656c20b"]]);
 
 export { Workbench as W, __mf_13 as _, __mf_6 as a, __mf_12 as b, __mf_0 as c };

@@ -1,12 +1,9 @@
-import { _ as __mf_13, a as __mf_6, W as Workbench } from './Workbench-BxXx1oR_.js';
+import { _ as __mf_13, a as __mf_6, W as Workbench } from './Workbench-Di-HbphI.js';
 
 const _sfc_main = {
-  __name: 'AppPage',
+  __name: 'Page',
   props: {
   api: { type: Object, default: () => ({}) },
-  navKey: { type: String, default: '' },
-  pluginId: { type: String, default: '' },
-  sourcePluginId: { type: String, default: '' },
 },
   emits: ['action', 'close'],
   setup(__props) {
