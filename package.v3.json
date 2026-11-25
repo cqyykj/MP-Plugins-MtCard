@@ -3,14 +3,15 @@
     "name": "MTeam 卡片管家",
     "description": "M-Team 收藏卡管理：总览 / 重复卡挂单（价格对照防扫）/ 我的成交。只用 API Key，不用 Cookie。",
     "labels": "卡片,PT,魔力争霸",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "icon": "https://kp.m-team.cc/favicon.ico",
     "author": "cqyykj",
     "level": 1,
     "v3": true,
     "system_version": ">=3.0.0",
     "history": {
-      "1.0.0": "首个版本：总览/重复卡挂单（三价对照标红防秒扫）/我的成交/批量挂单预览确认"
+      "v1.0.1": "修复 V3 加载失败：类名规范化为 MtCardManager、改用 app.sdk.plugin、API 响应统一信封",
+      "1.0.0": "首版：总览/重复卡挂单（三价对照防秒扫）/我的成交"
     }
   }
 }
