@@ -10,4 +10,4 @@ MoviePilot V3 插件：M-Team 收藏卡管理。
 
 ## 安装
 MP → 插件 → 设置 → 自定义仓库源，填入本仓库地址：
-https://github.com/cqyykj/MtCardManager
+https://github.com/cqyykj/MoviePilot-Plugins
