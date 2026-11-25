@@ -94,7 +94,7 @@ class MtCardManager(_PluginBase):
     plugin_name = "MTeam 卡片管家"
     plugin_desc = "M-Team 收藏卡管理：总览 / 重复卡挂单（价格对照防扫）/ 我的成交。只用 API Key，不用 Cookie。"
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.0.3"
+    plugin_version = "1.0.4"
     plugin_author = "cqyykj"
     author_url = "https://github.com/cqyykj/MP-Plugins-MtCard"
     plugin_config_prefix = "mtcardmanager_"
@@ -365,10 +365,28 @@ class MtCardManager(_PluginBase):
     # ------------------------------------------------------------------
     def api_status(self) -> Dict[str, Any]:
         key = self._get_api_key()
+        # 诊断字段：定位 V3 下 apikey 读取链路（仅布尔/计数，不下发明文）
+        diag_siteoper_loaded = SiteOper is not None
+        diag_site_found = False
+        diag_site_has_key = False
+        if SiteOper is not None:
+            try:
+                _s = SiteOper().get_by_domain("m-team.cc")
+                if _s is not None:
+                    diag_site_found = True
+                    diag_site_has_key = bool(getattr(_s, "apikey", "") or "")
+            except Exception:  # noqa: BLE001
+                pass
         return self._ok({
             "enabled": self._enabled,
             "has_key": bool(key),
             "key_hint": (key[:4] + "****") if key else None,
+            "diag": {
+                "siteoper_loaded": diag_siteoper_loaded,
+                "pluginmanager_loaded": PluginManager is not None,
+                "mteam_site_found": diag_site_found,
+                "mteam_site_has_key": diag_site_has_key,
+            },
         })
 
     def api_overview(self) -> Dict[str, Any]:

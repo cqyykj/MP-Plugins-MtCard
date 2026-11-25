@@ -3,7 +3,7 @@
     "name": "MTeam 卡片管家",
     "description": "M-Team 收藏卡管理：总览 / 重复卡挂单（价格对照防扫）/ 我的成交。只用 API Key，不用 Cookie。",
     "labels": "卡片,PT,魔力争霸",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "icon": "https://kp.m-team.cc/favicon.ico",
     "author": "cqyykj",
     "level": 1,
