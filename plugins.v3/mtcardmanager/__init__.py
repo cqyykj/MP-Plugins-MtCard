@@ -118,6 +118,11 @@ class MtCardManager(_PluginBase):
     def get_command() -> list[dict[str, Any]]:
         return []
 
+    @staticmethod
+    def get_render_mode() -> Tuple[str, str]:
+        """声明使用 Vue 联邦组件渲染插件界面（产物在 dist/assets）。"""
+        return "vue", "dist/assets"
+
     def get_form(self) -> tuple[list[dict], dict[str, Any]]:
         return [
             {
