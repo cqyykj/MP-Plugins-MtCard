@@ -84,7 +84,7 @@ class MtCardManager(_PluginBase):
     plugin_name = "MTeam 卡片管家"
     plugin_desc = "M-Team 收藏卡管理：总览 / 重复卡挂单（价格对照防扫）/ 我的成交。只用 API Key，不用 Cookie。"
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.0.1"
+    plugin_version = "1.0.2"
     plugin_author = "cqyykj"
     author_url = "https://github.com/cqyykj/MP-Plugins-MtCard"
     plugin_config_prefix = "mtcardmanager_"

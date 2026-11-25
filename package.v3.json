@@ -3,13 +3,14 @@
     "name": "MTeam 卡片管家",
     "description": "M-Team 收藏卡管理：总览 / 重复卡挂单（价格对照防扫）/ 我的成交。只用 API Key，不用 Cookie。",
     "labels": "卡片,PT,魔力争霸",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "icon": "https://kp.m-team.cc/favicon.ico",
     "author": "cqyykj",
     "level": 1,
     "v3": true,
     "system_version": ">=3.0.0",
     "history": {
+      "v1.0.2": "修复 Vue 联邦组件无法加载：改用官方 @module-federation/vite 重建前端，产出标准 get/init 协议，移除违规 Vuetify 全局样式",
       "v1.0.1": "修复 V3 加载失败：类名规范化为 MtCardManager、改用 app.sdk.plugin、API 响应统一信封",
       "1.0.0": "首版：总览/重复卡挂单（三价对照防秒扫）/我的成交"
     }
