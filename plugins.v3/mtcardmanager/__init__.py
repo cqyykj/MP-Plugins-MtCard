@@ -94,7 +94,7 @@ class MtCardManager(_PluginBase):
     plugin_name = "MTeam 卡片管家"
     plugin_desc = "M-Team 收藏卡管理：总览 / 重复卡挂单（价格对照防扫）/ 我的成交。只用 API Key，不用 Cookie。"
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.0.4"
+    plugin_version = "1.0.5"
     plugin_author = "cqyykj"
     author_url = "https://github.com/cqyykj/MP-Plugins-MtCard"
     plugin_config_prefix = "mtcardmanager_"
@@ -257,7 +257,13 @@ class MtCardManager(_PluginBase):
         for attempt in range(3):
             self._bucket.acquire()
             try:
-                resp = sess.post(API_BASE + endpoint, data=json.dumps(body or {}), timeout=20)
+                # 每次请求单独注入 x-api-key（合规：只发 API Key，绝不带 Cookie/JWT）
+                resp = sess.post(
+                    API_BASE + endpoint,
+                    data=json.dumps(body or {}),
+                    headers={"x-api-key": key},
+                    timeout=20,
+                )
                 if resp.status_code == 403:
                     return {"ok": False, "data": None, "error": "站点拒绝(403)，请稍后重试"}
                 resp.raise_for_status()
