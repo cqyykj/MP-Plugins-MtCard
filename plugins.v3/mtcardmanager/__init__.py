@@ -383,6 +383,23 @@ class MtCardManager(_PluginBase):
                     diag_site_has_key = bool(getattr(_s, "apikey", "") or "")
             except Exception:  # noqa: BLE001
                 pass
+        # 自测：用当前 key 真调一次 summary，确认 x-api-key 是否注入成功
+        diag_call_code = None
+        diag_call_msg = None
+        if key:
+            try:
+                self._bucket.acquire()
+                _r = self._get_session().post(
+                    API_BASE + "/api/pt-card/summary",
+                    data=json.dumps({}),
+                    headers={"x-api-key": key},
+                    timeout=20,
+                )
+                _o = _r.json()
+                diag_call_code = str(_o.get("code"))
+                diag_call_msg = str(_o.get("message", ""))[:80]
+            except Exception as e:  # noqa: BLE001
+                diag_call_msg = str(e)[:80]
         return self._ok({
             "enabled": self._enabled,
             "has_key": bool(key),
@@ -392,6 +409,8 @@ class MtCardManager(_PluginBase):
                 "pluginmanager_loaded": PluginManager is not None,
                 "mteam_site_found": diag_site_found,
                 "mteam_site_has_key": diag_site_has_key,
+                "call_code": diag_call_code,
+                "call_msg": diag_call_msg,
             },
         })
 
