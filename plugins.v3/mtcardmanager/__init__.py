@@ -97,7 +97,7 @@ class MtCardManager(_PluginBase):
     plugin_desc = ("M-Team 收藏卡管家：总览 / 重复卡挂单（三价对照防扫）/ 市场行情（手动确认买卡）/ "
                    "我的成交。只用 API Key，不用 Cookie。")
     plugin_icon = "Moviepilot_A.png"
-    plugin_version = "1.1.0"
+    plugin_version = "1.1.1"
     plugin_author = "cqyykj"
     author_url = "https://github.com/cqyykj/MP-Plugins-MtCard"
     plugin_config_prefix = "mtcardmanager_"
@@ -332,11 +332,30 @@ class MtCardManager(_PluginBase):
         return str(card.get("filmId") or ""), str(card.get("rarity") or "")
 
     @staticmethod
+    def _is_locked(card: dict) -> bool:
+        """交易锁是否**仍未过期**。
+
+        坑：api2 的 inventory 对每张卡都返回 tradeLockUntil 字段，绝大多数是
+        过去时间（历史锁）。旧代码只要字段非空就排除，导致锁早已过期的卡也
+        被判定不可挂 → dup-plan 恒为 0 组。必须比较时间，只排除未来锁。
+        """
+        v = card.get("tradeLockUntil")
+        if not v:
+            return False
+        try:
+            # 形如 '2026-11-26 06:59:59'；与本地当前时间比较
+            from datetime import datetime
+            return datetime.strptime(str(v)[:19], "%Y-%m-%d %H:%M:%S") > datetime.now()
+        except (ValueError, TypeError):
+            # 解析不了保守当作仍锁定，避免误挂交易锁卡
+            return True
+
+    @staticmethod
     def _dup_plan(cards: List[dict]) -> List[dict]:
-        """同片同稀有度留 1 张（优先薪王），交易锁未过期剔除。"""
+        """同片同稀有度留 1 张（优先薪王）；仅剔除交易锁**未过期**的卡。"""
         groups: Dict[Tuple[str, str], List[dict]] = {}
         for c in cards:
-            if c.get("tradeLockUntil"):
+            if MtCardManager._is_locked(c):
                 continue
             groups.setdefault(MtCardManager._group_key(c), []).append(c)
         plan = []
@@ -541,11 +560,13 @@ class MtCardManager(_PluginBase):
         bids = [o for o in raw
                 if str(o.get("side", "")).lower() == "buy"
                 and self._open_status(o.get("status"))]
-        # 取第一个挂单的 filmId/provenance 查订单簿成交
+        # 取第一个挂单的 filmId/provenance/rarity 查订单簿成交
         first = raw[0] if raw else {}
         film_id = first.get("filmId")
         provenance = first.get("provenance") or "real"
-        trades = self._recent_trades(film_id, rarity, provenance) if film_id else []
+        # 未指定稀有度时从挂单推断（orderbook 必须带 rarity，否则 code=1）
+        eff_rarity = rarity or first.get("rarity") or ""
+        trades = self._recent_trades(film_id, eff_rarity, provenance) if film_id else []
         last_price = int(trades[0]["price"]) if trades else None
         # 挂价是否高于最近成交（买卡避坑提示）
         for o in asks:
@@ -553,6 +574,7 @@ class MtCardManager(_PluginBase):
             o["aboveLastTrade"] = bool(last_price and p > last_price)
         return self._ok({
             "keyword": film_name, "rarity": rarity,
+            "matchedRarity": eff_rarity,  # 成交对比基于的稀有度（可能由挂单推断）
             "asks": asks, "bids": bids,
             "recentTrades": trades, "hasRealTrades": bool(trades),
             "lastTradePrice": last_price,

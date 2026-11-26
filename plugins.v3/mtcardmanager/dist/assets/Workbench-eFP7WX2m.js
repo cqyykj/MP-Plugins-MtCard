@@ -193,41 +193,43 @@ const _hoisted_15 = {
 };
 const _hoisted_16 = { class: "text-h6" };
 const _hoisted_17 = { class: "text-h6" };
-const _hoisted_18 = { class: "text-h6" };
-const _hoisted_19 = {
+const _hoisted_18 = { class: "text-caption" };
+const _hoisted_19 = { key: 0 };
+const _hoisted_20 = { class: "text-h6" };
+const _hoisted_21 = {
   key: 2,
   class: "text-medium-emphasis"
 };
-const _hoisted_20 = {
-  key: 0,
-  class: "text-center pa-4 text-medium-emphasis"
-};
-const _hoisted_21 = {
-  key: 0,
-  class: "text-center pa-4 text-medium-emphasis"
-};
 const _hoisted_22 = {
+  key: 0,
+  class: "text-center pa-4 text-medium-emphasis"
+};
+const _hoisted_23 = {
+  key: 0,
+  class: "text-center pa-4 text-medium-emphasis"
+};
+const _hoisted_24 = {
   key: 1,
   class: "text-center pa-6 text-medium-emphasis"
 };
-const _hoisted_23 = { class: "text-h5" };
-const _hoisted_24 = { class: "text-h5" };
 const _hoisted_25 = { class: "text-h5" };
-const _hoisted_26 = { class: "text-caption text-medium-emphasis" };
-const _hoisted_27 = {
+const _hoisted_26 = { class: "text-h5" };
+const _hoisted_27 = { class: "text-h5" };
+const _hoisted_28 = { class: "text-caption text-medium-emphasis" };
+const _hoisted_29 = {
   key: 0,
   class: "text-caption"
 };
-const _hoisted_28 = {
+const _hoisted_30 = {
   key: 1,
   class: "text-caption text-medium-emphasis"
 };
-const _hoisted_29 = { class: "font-weight-bold" };
-const _hoisted_30 = {
+const _hoisted_31 = { class: "font-weight-bold" };
+const _hoisted_32 = {
   key: 2,
   class: "text-medium-emphasis"
 };
-const _hoisted_31 = {
+const _hoisted_33 = {
   key: 0,
   class: "text-caption text-warning mt-2"
 };
@@ -919,7 +921,12 @@ return (_ctx, _cache) => {
                             }, {
                               default: __mf_19(() => [
                                 __mf_10("div", _hoisted_17, __mf_4(marketData.value.hasRealTrades ? fmt(marketData.value.lastTradePrice) : '无'), 1),
-                                _cache[30] || (_cache[30] = __mf_10("div", { class: "text-caption" }, "近期成交价", -1))
+                                __mf_10("div", _hoisted_18, [
+                                  _cache[30] || (_cache[30] = __mf_11("近期成交价", -1)),
+                                  (marketData.value.matchedRarity)
+                                    ? (__mf_15(), __mf_9("span", _hoisted_19, " · " + __mf_4(marketData.value.matchedRarity), 1))
+                                    : __mf_8("", true)
+                                ])
                               ]),
                               _: 1
                             })
@@ -936,7 +943,7 @@ return (_ctx, _cache) => {
                               class: "text-center pa-2"
                             }, {
                               default: __mf_19(() => [
-                                __mf_10("div", _hoisted_18, __mf_4(marketData.value.totalOrders ?? '—'), 1),
+                                __mf_10("div", _hoisted_20, __mf_4(marketData.value.totalOrders ?? '—'), 1),
                                 _cache[31] || (_cache[31] = __mf_10("div", { class: "text-caption" }, "挂单总数", -1))
                               ]),
                               _: 1
@@ -1013,7 +1020,7 @@ return (_ctx, _cache) => {
                                             ]))]),
                                             _: 1
                                           }))
-                                        : (__mf_15(), __mf_9("span", _hoisted_19, "无成交参考"))
+                                        : (__mf_15(), __mf_9("span", _hoisted_21, "无成交参考"))
                                   ]),
                                   __mf_10("td", null, [
                                     __mf_12(_component_v_btn, {
@@ -1035,7 +1042,7 @@ return (_ctx, _cache) => {
                           _: 1
                         }),
                         (!marketData.value.asks.length)
-                          ? (__mf_15(), __mf_9("div", _hoisted_20, "无在售挂单"))
+                          ? (__mf_15(), __mf_9("div", _hoisted_22, "无在售挂单"))
                           : __mf_8("", true)
                       ]),
                       _: 1
@@ -1110,14 +1117,14 @@ return (_ctx, _cache) => {
                           _: 1
                         }),
                         (!marketData.value.recentTrades.length)
-                          ? (__mf_15(), __mf_9("div", _hoisted_21, " 该片稀有度暂无真实成交，挂价仅供参考 "))
+                          ? (__mf_15(), __mf_9("div", _hoisted_23, " 该片稀有度暂无真实成交，挂价仅供参考 "))
                           : __mf_8("", true)
                       ]),
                       _: 1
                     })
                   ], 64))
                 : (marketSearched.value)
-                  ? (__mf_15(), __mf_9("div", _hoisted_22, "未查到行情"))
+                  ? (__mf_15(), __mf_9("div", _hoisted_24, "未查到行情"))
                   : __mf_8("", true)
             ]),
             _: 1
@@ -1137,7 +1144,7 @@ return (_ctx, _cache) => {
                             class: "text-center pa-3"
                           }, {
                             default: __mf_19(() => [
-                              __mf_10("div", _hoisted_23, __mf_4(trades.value.count), 1),
+                              __mf_10("div", _hoisted_25, __mf_4(trades.value.count), 1),
                               _cache[42] || (_cache[42] = __mf_10("div", { class: "text-caption" }, "成交笔数", -1))
                             ]),
                             _: 1
@@ -1152,7 +1159,7 @@ return (_ctx, _cache) => {
                             class: "text-center pa-3"
                           }, {
                             default: __mf_19(() => [
-                              __mf_10("div", _hoisted_24, __mf_4(fmt(trades.value.totalNet)), 1),
+                              __mf_10("div", _hoisted_26, __mf_4(fmt(trades.value.totalNet)), 1),
                               _cache[43] || (_cache[43] = __mf_10("div", { class: "text-caption" }, "净收入", -1))
                             ]),
                             _: 1
@@ -1167,7 +1174,7 @@ return (_ctx, _cache) => {
                             class: "text-center pa-3"
                           }, {
                             default: __mf_19(() => [
-                              __mf_10("div", _hoisted_25, __mf_4(fmt(trades.value.totalFee)), 1),
+                              __mf_10("div", _hoisted_27, __mf_4(fmt(trades.value.totalFee)), 1),
                               _cache[44] || (_cache[44] = __mf_10("div", { class: "text-caption" }, "手续费", -1))
                             ]),
                             _: 1
@@ -1241,7 +1248,7 @@ return (_ctx, _cache) => {
                         class: "d-flex align-center"
                       }, {
                         default: __mf_19(() => [
-                          __mf_10("div", _hoisted_26, " API Key：" + __mf_4(status.value?.key_hint || '未读取') + "（自动从站点配置读取，不手填；日志脱敏） ", 1)
+                          __mf_10("div", _hoisted_28, " API Key：" + __mf_4(status.value?.key_hint || '未读取') + "（自动从站点配置读取，不手填；日志脱敏） ", 1)
                         ]),
                         _: 1
                       })
@@ -1273,8 +1280,8 @@ return (_ctx, _cache) => {
                   __mf_12(_component_v_divider, { class: "my-4" }),
                   _cache[50] || (_cache[50] = __mf_10("div", { class: "text-subtitle-2 mb-2" }, "站点参数（仅展示，插件不自动分解/转蛋）", -1)),
                   (cfg.value)
-                    ? (__mf_15(), __mf_9("div", _hoisted_27, " 分解灰燼：N " + __mf_4(cfg.value.decompose?.n) + " / R " + __mf_4(cfg.value.decompose?.r) + " / SR " + __mf_4(cfg.value.decompose?.sr) + " / SSR " + __mf_4(cfg.value.decompose?.ssr) + "； 开包成本 " + __mf_4(cfg.value.pack?.cost) + " 灰燼/次 ", 1))
-                    : (__mf_15(), __mf_9("div", _hoisted_28, "加载中…"))
+                    ? (__mf_15(), __mf_9("div", _hoisted_29, " 分解灰燼：N " + __mf_4(cfg.value.decompose?.n) + " / R " + __mf_4(cfg.value.decompose?.r) + " / SR " + __mf_4(cfg.value.decompose?.sr) + " / SSR " + __mf_4(cfg.value.decompose?.ssr) + "； 开包成本 " + __mf_4(cfg.value.pack?.cost) + " 灰燼/次 ", 1))
+                    : (__mf_15(), __mf_9("div", _hoisted_30, "加载中…"))
                 ]),
                 _: 1
               })
@@ -1498,7 +1505,7 @@ return (_ctx, _cache) => {
                         ]),
                         __mf_10("tr", null, [
                           _cache[73] || (_cache[73] = __mf_10("td", null, "花费（魔力）", -1)),
-                          __mf_10("td", _hoisted_29, __mf_4(fmt(buyRow.value?.price)), 1)
+                          __mf_10("td", _hoisted_31, __mf_4(fmt(buyRow.value?.price)), 1)
                         ]),
                         __mf_10("tr", null, [
                           _cache[74] || (_cache[74] = __mf_10("td", null, "近期成交价", -1)),
@@ -1529,7 +1536,7 @@ return (_ctx, _cache) => {
                                     ]))]),
                                     _: 1
                                   }))
-                                : (__mf_15(), __mf_9("span", _hoisted_30, "无成交参考"))
+                                : (__mf_15(), __mf_9("span", _hoisted_32, "无成交参考"))
                           ])
                         ])
                       ])
@@ -1537,7 +1544,7 @@ return (_ctx, _cache) => {
                     _: 1
                   }),
                   (buyRow.value?.retiredHint)
-                    ? (__mf_15(), __mf_9("div", _hoisted_31, " 该片可能已缴交退场，缴交后只能从市场买回。 "))
+                    ? (__mf_15(), __mf_9("div", _hoisted_33, " 该片可能已缴交退场，缴交后只能从市场买回。 "))
                     : __mf_8("", true)
                 ]),
                 _: 1
@@ -1591,6 +1598,6 @@ return (_ctx, _cache) => {
 }
 
 };
-const Workbench = /*#__PURE__*/_export_sfc(_sfc_main, [['__scopeId',"data-v-af430e26"]]);
+const Workbench = /*#__PURE__*/_export_sfc(_sfc_main, [['__scopeId',"data-v-063ab27f"]]);
 
 export { Workbench as W, __mf_15 as _, __mf_7 as a, __mf_13 as b, __mf_0 as c };
